@@ -15,5 +15,5 @@ function dist_matr = calc_dist_matrix(imgs)
             dist_matr(i,j) = sqrt(sum(sum(r.^2 + g.^2 + b.^2)));
         end
     end        
-    dist_matr = mat2gray(dist_matr);
+%     dist_matr = mat2gray(dist_matr);
 end

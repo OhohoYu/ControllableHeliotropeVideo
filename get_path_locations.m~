@@ -1,0 +1,24 @@
+function [points_x, points_y] = get_path_locations(start_img)
+    
+    n_points = -1;
+    while (start_img < 1 || start_img > size(imgs,4))
+        start_img = input('Input the number of the starting frame between 1 and 72: ');
+    end
+
+    imshow(start_img);
+    
+    points_x = zeros();
+    points_y = [];
+
+    while (num_points < 4) 
+        [x,y] = ginput(1);
+        
+        % Append arrays with clicked positions
+        points_x = [points_x, x];
+        points_y = [points_y, y];
+        
+        num_points = num_points + 1;
+    end
+
+    close all;
+end
