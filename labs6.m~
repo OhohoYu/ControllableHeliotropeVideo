@@ -12,22 +12,38 @@ else
 end
 
 % Use threshold to eliminate large changes between frames for the graph
-dist_matr(dist_matr > 150) = 0;
-dist_graph = sparse(dist_matr);
+dist_matr(dist_matr > 180) = 0;
+dist_graph = biograph(sparse(dist_matr));
 
-% Ask the user to input starting images
-start_img = -1;
+% Load the optical flow
+disp('Loading optical flow...');
+% load('flows.mat'); % TODO Uncomment for submission
+
+% Ask the user to input the starting image
+start_img = 1;
 while (start_img < 1 || start_img > size(imgs,4))
     start_img = input('Input the number of the starting frame between 1 and 72: ');
 end
 
-% Ask user to input a series of locations
-num_points = 0;
-imshow()
-while (num_points < 4) 
+% Get input from user for series of locations on starting image
+[user_x, user_y] = user_path_locations(imgs(:,:,:,start_img));
+
+src_img = start_img;
+
+% Loop through clicked points i.e. each segment
+for i = 1 : size(user_x,2) - 1
+    
+    % Compute shortest path between source node and all others
+    Paths = user_path_locations(dist_graph, src_img, size(imgs,4));
+    
+    % Compute advected locations
+    [adv_x, adv_y] = compute_advected_locs(src_img, dist_graph, Paths, flows);
+    
+    % Pick pa
+    
+    % Update src img for next points
     
 end
-
 
 
 

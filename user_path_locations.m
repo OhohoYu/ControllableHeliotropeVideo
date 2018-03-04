@@ -1,13 +1,11 @@
-function [points_x, points_y] = get_path_locations(start_img)
+function clicked_points = user_path_locations(start_img)
     
     n_points = -1;
     while (n_points < 4 || n_points > 10)
         n_points = input('How many look-at points? (between 4 and 10): ');
     end
     
-    points_x = zeros(1, n_points);
-    points_y = zeros(1, n_points);
-    
+    clicked_points = zeros(n_points, 2);    
     imshow(start_img);
     
     for points_clicked = 1 : n_points
@@ -16,8 +14,8 @@ function [points_x, points_y] = get_path_locations(start_img)
         plot(x,y,'r+');
         
         % Append arrays with clicked positions
-        points_x(1, points_clicked) = x;
-        points_y(1, points_clicked) = y;
+        clicked_points(points_clicked, 1) = round(x);
+        clicked_points(points_clicked, 2) = round(y);
     end
 
     close all;
