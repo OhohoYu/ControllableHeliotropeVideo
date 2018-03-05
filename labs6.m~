@@ -14,7 +14,7 @@ else
 end
 
 % Use threshold to eliminate large changes between frames for the graph
-% dist_matr(dist_matr > 250) = 0;
+dist_matr(dist_matr > 250) = 0;
 dist_graph = biograph(sparse(dist_matr));
 
 % Load the optical flow
@@ -22,42 +22,62 @@ disp('Loading optical flow...');
 % load('flows.mat'); % TODO Uncomment for submission
 
 % Ask the user to input the starting image
-start_img = 1;
+start_img = -1;
 while (start_img < 1 || start_img > n_imgs)
     start_img = input('Input the number of the starting frame between 1 and 72: ');
 end
 
 % Get input from user for series of locations on starting image
-clicked_points = user_path_locations(imgs(:,:,:,start_img));
+look_at_points = user_path_locations(imgs(:,:,:,start_img));
+
+disp('Computing path...');
 
 src_node = start_img;
 out_path = [];
+est_path = [look_at_points(1,:)];
 
 % Loop through clicked points i.e. each segment
-for i = 1 : size(clicked_points,1)
+for i = 2 : size(look_at_points,1)
+    
+    start_pt = look_at_points(i-1,:);
     
     % Compute shortest path between source node and all others
     Paths = compute_shortest_paths(dist_graph, src_node, n_imgs);
     
     % Compute advected locations of point s in other nodes
-    advected_locs = compute_advected_locs(Paths, flows_a, clicked_points(i,:));
+    advected_locs = compute_advected_locs(Paths, flows_a, start_pt, look_at_points(i,:));
     
     % Get node that is closest to the clicked position
-    closest_node = get_closest_node(n_imgs, advected_locs, clicked_points(i,:));
+    [closest_node, closest_pt] = get_closest_node(n_imgs, advected_locs, look_at_points(i,:));
     
-    % Add shortest path to closest node to output array
+    % Add shortest path to closest node to output array and closest point
+    % to estimated path
     out_path = [out_path, Paths(1,closest_node)];
+    est_path = [est_path, closest_pt];
     
     disp(src_node);
     src_node = closest_node;
 end
 
-% Play video
-out_imgs = [];
+% Convert output array into a sequence of images
+out_imgs = [imgs(:,:,:,start_img)];
+n = 2;
 for i = 1 : size(out_path,2)
-    for j = 1 : size(out_path{1,i},2)
-        out_imgs(:,:,:,1) = imgs(:,:,:,out_path{1,i}());
+    for j = 2 : size(out_path{1,i},2)
+        disp(out_path{1,i}(j));
+        out_imgs(:,:,:,n) = imgs(:,:,:,out_path{1,i}(j));
+        n = n + 1;
     end
 end
+
+% Show user clicked path compared to estimated path
+imshow(imgs(:,:,:,start_img));
+hold on;
+
+
+
+% implay(out_imgs);
+
+
 
 

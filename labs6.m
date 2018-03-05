@@ -22,7 +22,7 @@ disp('Loading optical flow...');
 % load('flows.mat'); % TODO Uncomment for submission
 
 % Ask the user to input the starting image
-start_img = 1;
+start_img = -1;
 while (start_img < 1 || start_img > n_imgs)
     start_img = input('Input the number of the starting frame between 1 and 72: ');
 end
@@ -34,6 +34,7 @@ disp('Computing path...');
 
 src_node = start_img;
 out_path = [];
+est_path = [look_at_points(1,:)];
 
 % Loop through clicked points i.e. each segment
 for i = 2 : size(look_at_points,1)
@@ -49,8 +50,10 @@ for i = 2 : size(look_at_points,1)
     % Get node that is closest to the clicked position
     [closest_node, closest_pt] = get_closest_node(n_imgs, advected_locs, look_at_points(i,:));
     
-    % Add shortest path to closest node to output array
+    % Add shortest path to closest node to output array and closest point
+    % to estimated path
     out_path = [out_path, Paths(1,closest_node)];
+    est_path = [est_path; closest_pt];
     
     disp(src_node);
     src_node = closest_node;
@@ -67,6 +70,13 @@ for i = 1 : size(out_path,2)
     end
 end
 
+% Show user clicked path compared to estimated path
+imshow(imgs(:,:,:,start_img));
+hold on;
+plot(look_at_points(:,1),look_at_points(:,2),'-o','Color',[1,0,0], 'LineWidth', 1.5, 'MarkerSize', 5);
+plot(est_path(:,1),est_path(:,2),'-o','Color',[0,0.7,0.9], 'LineWidth', 1.5, 'MarkerSize', 5);
+
+% Play output image sequence
 implay(out_imgs);
 
 
