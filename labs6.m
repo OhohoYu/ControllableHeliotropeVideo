@@ -28,7 +28,7 @@ while (start_img < 1 || start_img > n_imgs)
 end
 
 % Get input from user for series of locations on starting image
-clicked_points = user_path_locations(imgs(:,:,:,start_img));
+look_at_points = user_path_locations(imgs(:,:,:,start_img));
 
 disp('Computing path...');
 
@@ -36,16 +36,18 @@ src_node = start_img;
 out_path = [];
 
 % Loop through clicked points i.e. each segment
-for i = 1 : size(clicked_points,1)
+for i = 2 : size(look_at_points,1)
+    
+    start_pt = look_at_points(i-1,:);
     
     % Compute shortest path between source node and all others
     Paths = compute_shortest_paths(dist_graph, src_node, n_imgs);
     
     % Compute advected locations of point s in other nodes
-    advected_locs = compute_advected_locs(Paths, flows_a, clicked_points(i,:));
+    advected_locs = compute_advected_locs(Paths, flows_a, start_pt, look_at_points(i,:));
     
     % Get node that is closest to the clicked position
-    closest_node = get_closest_node(n_imgs, advected_locs, clicked_points(i,:));
+    [closest_node, closest_pt] = get_closest_node(n_imgs, advected_locs, look_at_points(i,:));
     
     % Add shortest path to closest node to output array
     out_path = [out_path, Paths(1,closest_node)];
@@ -55,14 +57,17 @@ for i = 1 : size(clicked_points,1)
 end
 
 % Convert output array into a sequence of images
-out_imgs = [];
-n = 1;
+out_imgs = [imgs(:,:,:,start_img)];
+n = 2;
 for i = 1 : size(out_path,2)
-    for j = 1 : size(out_path{1,i},2)
+    for j = 2 : size(out_path{1,i},2)
+        disp(out_path{1,i}(j));
         out_imgs(:,:,:,n) = imgs(:,:,:,out_path{1,i}(j));
         n = n + 1;
     end
 end
+
+implay(out_imgs);
 
 
 

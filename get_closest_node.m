@@ -1,4 +1,4 @@
-function closest = get_closest_node(n_imgs, advected_locs, clicked_point)
+function [closest, closest_point] = get_closest_node(n_imgs, advected_locs, clicked_point)
     
     diff = zeros(n_imgs,1);
     
@@ -10,4 +10,5 @@ function closest = get_closest_node(n_imgs, advected_locs, clicked_point)
     end
     
     closest = find(diff == min(diff));
+    closest_point = advected_locs(closest,:);
 end
