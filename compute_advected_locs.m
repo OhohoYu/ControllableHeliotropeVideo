@@ -11,7 +11,7 @@ function advected_locs = compute_advected_locs(Paths, flows_a, start_pt, point)
             advected_locs(i, 1) = start_pt(1);
             advected_locs(i, 2) = start_pt(2);
 
-            % Iterate each node in the path and sum the optical flow between
+            % Iterate through each image in the path and sum the optical flow between
             % each node
             for p = 1 : size(path,2)-1
                 flow = get_optical_flow(path(p), path(p+1), flows_a);

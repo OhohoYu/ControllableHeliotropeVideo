@@ -1,0 +1,14 @@
+To run:
+
+Run labs6('path/to/images/', 'image_prefix', 'first_frame', 'last_frame', 'digits_in_frame_number', 'image_suffix'), for example:
+ - labs6('gjbLookAtTargets', 'gjbLookAtTarget_00', 0, 71, 2, 'jpg');
+
+When prompted, enter the starting image and following this, the number of look at points.
+
+The starting image will be shown and you will be asked to select the starting point in the image as well as the look at points. 
+
+Once the path has been computed, the path comparison will be shown drawn onto the starting image as well as the output image sequence.
+
+The output_seq folder contains a precomputed image sequence that corresponds to the path drawn in the report. Therefore, the 'save_sequence' function has been commented out in the code.
+
+
