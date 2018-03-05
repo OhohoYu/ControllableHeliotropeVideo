@@ -1,5 +1,7 @@
 To run:
 
+Make sure to include the flows.mat file before running as this is not included in the submission to to its' size.
+
 Run labs6('path/to/images/', 'image_prefix', 'first_frame', 'last_frame', 'digits_in_frame_number', 'image_suffix'), for example:
  - labs6('gjbLookAtTargets', 'gjbLookAtTarget_00', 0, 71, 2, 'jpg');
 
