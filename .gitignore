@@ -1,1 +1,3 @@
 resources/*
+output_seq/*
+*.fig

@@ -28,27 +28,27 @@ while (start_img < 1 || start_img > n_imgs)
 end
 
 % Get input from user for series of locations on starting image
-look_at_points = user_path_locations(imgs(:,:,:,start_img));
+clicked_pts = user_path_locations(imgs(:,:,:,start_img));
 
 disp('Computing path...');
 
 src_node = start_img;
 out_path = [];
-est_path = [look_at_points(1,:)];
+est_path = [clicked_pts(1,:)];
 
 % Loop through clicked points i.e. each segment
-for i = 2 : size(look_at_points,1)
+for i = 2 : size(clicked_pts,1)
     
-    start_pt = look_at_points(i-1,:);
+    start_pt = clicked_pts(i-1,:);
     
     % Compute shortest path between source node and all others
     Paths = compute_shortest_paths(dist_graph, src_node, n_imgs);
     
     % Compute advected locations of point s in other nodes
-    advected_locs = compute_advected_locs(Paths, flows_a, start_pt, look_at_points(i,:));
+    advected_locs = compute_advected_locs(Paths, flows_a, start_pt, clicked_pts(i,:));
     
     % Get node that is closest to the clicked position
-    [closest_node, closest_pt] = get_closest_node(n_imgs, advected_locs, look_at_points(i,:));
+    [closest_node, closest_pt] = get_closest_node(n_imgs, advected_locs, clicked_pts(i,:));
     
     % Add shortest path to closest node to output array and closest point
     % to estimated path
@@ -70,10 +70,13 @@ for i = 1 : size(out_path,2)
     end
 end
 
+% Save image sequence
+% save_sequence(out_imgs, 'output_seq', 'out_seq', 1, 4);
+
 % Show user clicked path compared to estimated path
 imshow(imgs(:,:,:,start_img));
 hold on;
-plot(look_at_points(:,1),look_at_points(:,2),'-o','Color',[1,0,0], 'LineWidth', 1.5, 'MarkerSize', 5);
+plot(clicked_pts(:,1),clicked_pts(:,2),'-o','Color',[1,0,0], 'LineWidth', 1.5, 'MarkerSize', 5);
 plot(est_path(:,1),est_path(:,2),'-o','Color',[0,0.7,0.9], 'LineWidth', 1.5, 'MarkerSize', 5);
 
 % Play output image sequence
