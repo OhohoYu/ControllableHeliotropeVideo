@@ -1,3 +1,4 @@
 resources/*
 output_seq/*
 *.fig
+output_slowmo/*

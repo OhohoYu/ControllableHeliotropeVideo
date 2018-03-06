@@ -33,7 +33,7 @@ else
 end
 
 % Get the number of frames in the matrix
-l = size(matrix,4)
+l = size(matrix,4);
 
 for i=1:l
     

@@ -9,7 +9,7 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix)
 
     n_imgs = size(imgs,4);
 
-    % Calculate distance matric (dense)
+    % Calculate distance matric
     disp('Computing distance matrix...');
     if ~exist('gjb_dist_matrix.mat', 'file') 
         dist_matr = calc_dist_matrix(imgs);
@@ -19,7 +19,7 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix)
     end
 
     % Use threshold to eliminate large distances
-    dist_matr(dist_matr > 250) = 0;
+    dist_matr(dist_matr > 75) = 0;
     dist_graph = biograph(sparse(dist_matr));
 
     % Load the optical flow
@@ -64,7 +64,7 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix)
         src_node = closest_node;
     end
 
-    % Convert output array into a sequence of images
+    % Convert out_path into a sequence of images
     out_imgs = [imgs(:,:,:,start_img)];
     n = 2;
     for i = 1 : size(out_path,2)
@@ -76,7 +76,7 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix)
 
     % Save image sequence
     % save_sequence(out_imgs, 'output_seq', 'out_seq_', 1, 4);
-
+    
     % Show user clicked path compared to estimated path
     imshow(imgs(:,:,:,start_img));
     hold on;
