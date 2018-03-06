@@ -80,14 +80,28 @@ for i = 2 : size(out_imgs_index,2)
     img1 = imgs(:,:,:,out_imgs_index(i-1));
     img2 = imgs(:,:,:,out_imgs_index(i));
     
-    interm = get_interm_frames(img1, img2, 4, flows_a, out_imgs_index(i-1), out_imgs_index(i));
-    interm_back = get_interm_frames(img2, img1, 6, flows_a, out_imgs_index(i), out_imgs_index(i-1));
+    interm = get_interm_frames(img1, img2, 15, flows_a, out_imgs_index(i-1), out_imgs_index(i));
+    interm_back = get_interm_frames(img2, img1, 15, flows_a, out_imgs_index(i), out_imgs_index(i-1));
     slow_mo_frames = average_interm_frames(interm,interm_back);
     out_imgs_slow = cat(4, out_imgs_slow, slow_mo_frames, img2);
 end
 
 % Save image sequence
 % save_sequence(out_imgs_slow, 'output_slowmo', 'out_seq_', 1, 4);
+
+% Save as video file
+vid_writer = VideoWriter('slow_mo.avi');
+vid_writer.FrameRate = 10;
+open(vid_writer);
+
+out_imgs_slow(out_imgs_slow > 1) = 1;
+out_imgs_slow(out_imgs_slow < 0) = 0;
+
+for i = 1:size(out_imgs_slow,4)
+    writeVideo(vid_writer, out_imgs_slow(:,:,:,i));
+end
+
+close(vid_writer);
 
 % Show user clicked path compared to estimated path
 imshow(imgs(:,:,:,start_img));

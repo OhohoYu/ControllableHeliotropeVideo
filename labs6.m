@@ -77,6 +77,20 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix)
     % Save image sequence
     % save_sequence(out_imgs, 'output_seq', 'out_seq_', 1, 4);
     
+    % Save as video file
+    vid_writer = VideoWriter('basic.avi');
+    vid_writer.FrameRate = 10;
+    open(vid_writer);
+
+    out_imgs(out_imgs > 1) = 1;
+    out_imgs(out_imgs < 0) = 0;
+
+    for i = 1:size(out_imgs,4)
+        writeVideo(vid_writer, out_imgs(:,:,:,i));
+    end
+
+    close(vid_writer);
+    
     % Show user clicked path compared to estimated path
     imshow(imgs(:,:,:,start_img));
     hold on;
