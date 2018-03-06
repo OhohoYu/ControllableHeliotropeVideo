@@ -80,7 +80,9 @@ for i = 2 : size(out_imgs_index,2)
     img1 = imgs(:,:,:,out_imgs_index(i-1));
     img2 = imgs(:,:,:,out_imgs_index(i));
     
-    slow_mo_frames = get_interm_frames(img1, img2, 4, flows_a, out_imgs_index(i-1), out_imgs_index(i));
+    interm = get_interm_frames(img1, img2, 4, flows_a, out_imgs_index(i-1), out_imgs_index(i));
+    interm_back = get_interm_frames(img2, img1, 6, flows_a, out_imgs_index(i), out_imgs_index(i-1));
+    slow_mo_frames = average_interm_frames(interm,interm_back);
     out_imgs_slow = cat(4, out_imgs_slow, slow_mo_frames, img2);
 end
 
