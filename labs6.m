@@ -1,4 +1,4 @@
-function out_imgs = labs6(path, prefix, first, last, digits, suffix)
+function out_imgs = labs6(path, prefix, first, last, digits, suffix, flows_a)
     % Example method call:
     % labs6('gjbLookAtTargets', 'gjbLookAtTarget_00', 0, 71, 2, 'jpg');
 
@@ -19,12 +19,12 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix)
     end
 
     % Use threshold to eliminate large distances
-    dist_matr(dist_matr > 75) = 0;
+    dist_matr(dist_matr > 65) = 0;
     dist_graph = biograph(sparse(dist_matr));
 
     % Load the optical flow
     disp('Loading optical flow...');
-    load('flows.mat');
+%     load('flows.mat');
 
     % Ask the user to input the starting image
     start_img = -1;
