@@ -1,4 +1,5 @@
 function out_imgs = labs6(path, prefix, first, last, digits, suffix, flows_a)
+    
     % Example method call:
     % labs6('gjbLookAtTargets', 'gjbLookAtTarget_00', 0, 71, 2, 'jpg');
 
@@ -24,7 +25,7 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix, flows_a)
 
     % Load the optical flow
     disp('Loading optical flow...');
-%     load('flows.mat');
+    load('flows.mat');
 
     % Ask the user to input the starting image
     start_img = -1;
@@ -78,18 +79,18 @@ function out_imgs = labs6(path, prefix, first, last, digits, suffix, flows_a)
     % save_sequence(out_imgs, 'output_seq', 'out_seq_', 1, 4);
     
     % Save as video file
-    vid_writer = VideoWriter('basic.avi');
-    vid_writer.FrameRate = 10;
-    open(vid_writer);
-
-    out_imgs(out_imgs > 1) = 1;
-    out_imgs(out_imgs < 0) = 0;
-
-    for i = 1:size(out_imgs,4)
-        writeVideo(vid_writer, out_imgs(:,:,:,i));
-    end
-
-    close(vid_writer);
+%     vid_writer = VideoWriter('basic.avi');
+%     vid_writer.FrameRate = 10;
+%     open(vid_writer);
+% 
+%     out_imgs(out_imgs > 1) = 1;
+%     out_imgs(out_imgs < 0) = 0;
+% 
+%     for i = 1:size(out_imgs,4)
+%         writeVideo(vid_writer, out_imgs(:,:,:,i));
+%     end
+% 
+%     close(vid_writer);
     
     % Show user clicked path compared to estimated path
     imshow(imgs(:,:,:,start_img));
