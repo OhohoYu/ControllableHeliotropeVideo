@@ -1,4 +1,3 @@
-end
 function out_imgs = labs6_slowmo(path, prefix, first, last, digits, suffix, n_interm_frames)
 
     % Example function call
